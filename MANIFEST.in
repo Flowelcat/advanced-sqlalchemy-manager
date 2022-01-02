@@ -1,2 +1,2 @@
-include tests.py
 include README.rst
+exclude tests

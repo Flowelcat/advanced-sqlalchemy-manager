@@ -3,13 +3,13 @@ from setuptools import setup
 
 
 setup(
-    name='sqlalchemy-manager',
-    version='0.0.2',
+    name='advanced-advanced-sqlalchemy-manager',
+    version='0.1.0',
     description='Manager for SQLAlchemy',
-    long_description=open('README.rst').read(),
-    author='Roman Gladkov',
-    author_email='d1fffuz0r@gmail.com',
-    url='https://github.com/d1ffuz0r/sqlalchemy-manager',
+    long_description=open('README.md').read(),
+    author='Flowelcat',
+    author_email='flowelcat@gmail.com',
+    url='https://github.com/Flowelcat/advanced-sqlalchemy-manager',
     install_requires=['sqlalchemy'],
     py_modules=['alchmanager'],
     zip_safe=False,
@@ -17,7 +17,12 @@ setup(
     classifiers=(
         'Intended Audience :: Developers',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     )
 )
