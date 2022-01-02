@@ -2,8 +2,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from alchmanager import ManagedQuery, BaseQueryManager
-from alchmanager import ManagedSession
+from alchmanager.alchmanager import ManagedQuery, BaseQueryManager
+from alchmanager.alchmanager import ManagedSession
 from tests.models import Book, Person, Student, Base
 
 

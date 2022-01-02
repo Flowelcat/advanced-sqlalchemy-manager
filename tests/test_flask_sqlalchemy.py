@@ -2,7 +2,7 @@ import flask
 import pytest
 from flask_sqlalchemy import SQLAlchemy
 
-from alchmanager import ManagedQuery
+from alchmanager.alchmanager import ManagedQuery
 from tests.models import Base, Person, Book, Student
 
 app = flask.Flask(__name__)
