@@ -1,19 +1,18 @@
-Managers for SQLAlchemy.
-========================
+# Managers for SQLAlchemy.
 Manager for model, methods were added during runtime to query.
 
-##Installation
+## Installation
 
 ```
     $ [sudo] pip install advanced-sqlalchemy-manager
 ```
 
-##Documentation
+## Documentation
 
-###ManagedQuery
+### ManagedQuery
 Managed query that replaces sqlalchemy.query class
 
-###Example:
+### Example:
 
 ```python
     from sqlalchemy.orm import sessionmaker
@@ -59,7 +58,7 @@ Managed query that replaces sqlalchemy.query class
     person_25_years_old = session.query(Person).first_of_exact_age(25)
 ```
 
-###ManagedSession
+### ManagedSession
 
 Managed session. 
 Use decorator ``load_manager()`` to register query managers into session.
