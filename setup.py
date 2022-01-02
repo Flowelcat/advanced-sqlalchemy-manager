@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 setup(
-    name='advanced-advanced-sqlalchemy-manager',
+    name='advanced-sqlalchemy-manager',
     version='0.1.0',
     description='Manager for SQLAlchemy',
     long_description=open('README.md').read(),
