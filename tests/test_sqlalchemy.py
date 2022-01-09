@@ -1,4 +1,5 @@
 from tests.conftest import Person, Book, Student
+from tests.models import Exam
 
 
 class TestsQueryManager:
@@ -26,6 +27,26 @@ class TestsQueryManager:
     def test_without_manager(self):
         assert not hasattr(self.session.query(Book), 'is_public')
         assert hasattr(self.session.query(Book).filter(Book.is_public.is_(True)).first(), 'is_public')
+
+    def test_with_attribute(self):
+        standard_query = self.session.query(Person.age).filter(Person.age > 50).filter(Person.age < 100)
+        managed_query = self.session.query(Person.age).older_than(50).younger_than(100)
+        assert str(standard_query) == str(managed_query)
+        assert managed_query.scalar() == 60
+
+    def test_with_multiple_attributes(self):
+        standard_query = self.session.query(Person.name, Person.age).filter(Person.age > 50).filter(Person.age < 100)
+        managed_query = self.session.query(Person.name, Person.age).older_than(50).younger_than(100)
+        assert str(standard_query) == str(managed_query)
+        assert managed_query.first() == ("Person 2", 60)
+
+    def test_with_multiple_models(self):
+        standard_query = self.session.query(Exam, Person).join(Exam.student).filter(Person.age > 20).filter(Person.age < 40).filter(Exam.score > 80)
+        managed_query = self.session.query(Exam, Person).join(Exam.student).older_than(20).younger_than(40).filter(Exam.score > 80)
+        assert str(standard_query) == str(managed_query)
+        exam, student = managed_query.first()
+        assert exam.score == 94
+        assert student.name == "Student 1"
 
 
 class TestsSessionManager:

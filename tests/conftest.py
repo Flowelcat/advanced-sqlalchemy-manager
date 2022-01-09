@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from alchmanager.alchmanager import ManagedQuery, BaseQueryManager
 from alchmanager.alchmanager import ManagedSession
-from tests.models import Book, Person, Student, Base
+from tests.models import Book, Person, Student, Base, Exam
 
 
 class BookQueryManager(BaseQueryManager):
@@ -41,8 +41,13 @@ def create_db(request):
 
     session.add(Person(name="Person 1", age=25))
     session.add(Person(name="Person 2", age=60))
-    session.add(Student(name="Student 1", age=21, subject="Mathematics"))
-    session.add(Student(name="Student 2", age=23, subject="Physics"))
+    student_1 = Student(name="Student 1", age=21, subject="Mathematics")
+    student_2 = Student(name="Student 2", age=23, subject="Physics")
+    session.add(student_1)
+    session.add(student_2)
+    session.add(Exam(title="Mathematics", score=94, student=student_1))
+    session.add(Exam(title="Physics", score=75, student=student_2))
+
     session.add(Book(title="Best book ever", is_public=True))
     session.add(Book(title="Small specific book", is_public=False))
 

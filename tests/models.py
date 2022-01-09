@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -24,11 +25,21 @@ class Student(Person):
     __tablename__ = 'students'
 
     subject = Column(String, nullable=True)
-
     __mapper_args__ = {
         'polymorphic_identity': 'student',
         'inherit_condition': (Person.type == 'student')
     }
+
+
+class Exam(Base):
+    __tablename__ = 'exams'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(50), nullable=False)
+    score = Column(Float(), nullable=False)
+
+    student_id = Column(Integer, ForeignKey("persons.id"), nullable=False)
+    student = relationship("Person", backref="exam")
 
 
 class Book(Base):
