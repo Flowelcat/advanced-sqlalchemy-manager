@@ -11,12 +11,13 @@ import inspect
 if sys.version_info[0] == 3 and sys.version_info[1] <= 5:
     from sqlalchemy.ext.declarative.api import DeclarativeMeta
 else:
-    from sqlalchemy.orm import DeclarativeMeta
+    from sqlalchemy.orm import DeclarativeMeta, InstrumentedAttribute
 from sqlalchemy.orm.mapper import Mapper
 from sqlalchemy.orm.query import Query
 from sqlalchemy.orm.session import Session
 
 from sqlalchemy.sql.functions import GenericFunction
+from collections.abc import Iterable
 
 not_doubleunder = lambda name: not name.startswith('__')
 not_under = lambda name: not name.startswith('_')
@@ -48,24 +49,27 @@ class ManagedQuery(Query):
     def __init__(self, entities, *args, **kwargs):
         self.binds = {}
         self.manager = None
-        entity = None
 
-        if isinstance(entities, tuple) and len(entities):
-            entity = entities[0]
+        if not isinstance(entities, Iterable):
+            entities = [entities]
 
-        if isinstance(entity, GenericFunction):
-            entity = entity.entity_namespace
+        for entity in entities:
+            if isinstance(entity, GenericFunction):
+                entity = entity.entity_namespace
 
-        if isinstance(entities, Mapper):
-            entity = entities.entity
+            if isinstance(entity, Mapper):
+                entity = entity.entity
 
-        if isinstance(entity, DeclarativeMeta):
-            manager_cls = self.__get_query_manager(entity)
-            self.manager = manager_cls
-            for fname in filter(not_doubleunder, dir(manager_cls)):
-                fn = getattr(manager_cls, fname)
-                setattr(self, fname, types.MethodType(fn, self))
-                self.binds.update({fname: fn})
+            if isinstance(entity, InstrumentedAttribute):
+                entity = entity.class_
+
+            if isinstance(entity, DeclarativeMeta):
+                manager_cls = self.__get_query_manager(entity)
+                self.manager = manager_cls
+                for fname in filter(not_doubleunder, dir(manager_cls)):
+                    fn = getattr(manager_cls, fname)
+                    setattr(self, fname, types.MethodType(fn, self))
+                    self.binds.update({fname: fn})
 
         # print("Created new query")
         super(ManagedQuery, self).__init__(entities, *args, **kwargs)
